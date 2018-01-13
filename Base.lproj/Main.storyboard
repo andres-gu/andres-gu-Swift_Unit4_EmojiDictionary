@@ -13,7 +13,7 @@
         <!--Emoji Dictionary-->
         <scene sceneID="Axs-tI-Kds">
             <objects>
-                <tableViewController id="w4v-Xf-P7q" customClass="EmojiTableViewController" customModule="EmojisDictionary" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Emoji Dictionary" id="w4v-Xf-P7q" customClass="EmojiTableViewController" customModule="EmojisDictionary" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="CUO-Kg-ALX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -78,7 +78,8 @@
                             <outlet property="delegate" destination="w4v-Xf-P7q" id="15H-Fi-X6V"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Emoji Dictionary" id="nxZ-kt-2Nb">
+                    <navigationItem key="navigationItem" title="Emoji Dictionary" largeTitleDisplayMode="always" id="nxZ-kt-2Nb">
+                        <barButtonItem key="backBarButtonItem" title="Cancel" id="3p9-is-ON9"/>
                         <barButtonItem key="leftBarButtonItem" title="Edit" id="ea4-Mc-aQ7">
                             <connections>
                                 <action selector="navEditButtonTapped:" destination="w4v-Xf-P7q" id="VBc-R0-BoX"/>

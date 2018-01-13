@@ -166,6 +166,8 @@ class EmojiTableViewController: UITableViewController {
     
     // Prepare for segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        // sending the data to AddEditTableViewController:
         if segue.identifier == "EditEmoji" {
             let indexPath = tableView.indexPathForSelectedRow!
             let emoji = emojisCategorized[indexPath.section][indexPath.row]
