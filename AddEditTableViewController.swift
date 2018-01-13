@@ -33,7 +33,7 @@ class AddEditTableViewController: UITableViewController, UITextFieldDelegate {
             nameTextField.text = emoji.name
             descriptionTextField.text = emoji.description
             usageTextField.text = emoji.usage
-            categoryTextField.text = emoji.category.rawValue
+            categoryTextField.text = emoji.category
             navTitleLabel.title = "Edit \(emoji.symbol)"
         }
         
@@ -113,7 +113,7 @@ class AddEditTableViewController: UITableViewController, UITextFieldDelegate {
         let usage = usageTextField.text ?? ""
         let category = categoryTextField.text ?? ""
         
-        emoji = Emoji(symbol: symbol, name: name, description: description, usage: usage, category: emojiCategory(rawValue: category)!)
+        emoji = Emoji(symbol: symbol, name: name, description: description, usage: usage, category: category)
     }
 }
 

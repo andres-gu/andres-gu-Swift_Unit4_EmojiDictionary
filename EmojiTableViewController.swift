@@ -20,14 +20,12 @@ class EmojiTableViewController: UITableViewController {
         let loadedEmojiFile = Emoji.loadFromFile()
         if loadedEmojiFile.count > 0 {
             print("file loaded")
+            emojisCategorized = loadedEmojiFile
         } else {
             print("samples loaded")
             emojis = Emoji.loadSampleEmojis()
+            emojiCategorization(source: emojis)
         }
-        
-        emojiCategorization(source: emojis)
-        print("ETVC viewDidLoad")
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -63,20 +61,22 @@ class EmojiTableViewController: UITableViewController {
         
         for index in source {
             switch index.category{
-            case emojiCategory.Smileys:
+            case emojiCategory.Smileys.rawValue:
                 emojisCategorized[0].append(index)
-            case emojiCategory.People:
+            case emojiCategory.People.rawValue:
                 emojisCategorized[1].append(index)
-            case emojiCategory.Animals:
+            case emojiCategory.Animals.rawValue:
                 emojisCategorized[2].append(index)
-            case emojiCategory.Nature:
+            case emojiCategory.Nature.rawValue:
                 emojisCategorized[3].append(index)
-            case emojiCategory.Food:
+            case emojiCategory.Food.rawValue:
                 emojisCategorized[4].append(index)
-            case emojiCategory.Objects:
+            case emojiCategory.Objects.rawValue:
                 emojisCategorized[5].append(index)
-            case emojiCategory.Symbols:
+            case emojiCategory.Symbols.rawValue:
                 emojisCategorized[6].append(index)
+            default:
+                emojisCategorized[0].append(index)
             }
         }
     }
@@ -145,6 +145,7 @@ class EmojiTableViewController: UITableViewController {
         let selectedEmoji = emojisCategorized[fromIndexPath.section].remove(at: fromIndexPath.row)
         if fromIndexPath.section == to.section {
             emojisCategorized[fromIndexPath.section].insert(selectedEmoji, at: to.row)
+            Emoji.saveToFile(emojis: emojisCategorized)
             tableView.reloadData()
         } else {
             emojisCategorized[fromIndexPath.section].insert(selectedEmoji, at: fromIndexPath.row)
@@ -155,6 +156,7 @@ class EmojiTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             emojisCategorized[indexPath.section].remove(at: indexPath.row)
+            Emoji.saveToFile(emojis: emojisCategorized)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
@@ -179,16 +181,36 @@ class EmojiTableViewController: UITableViewController {
         if let emoji = sourceViewController.emoji {
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
                 emojisCategorized[selectedIndexPath.section][selectedIndexPath.row] = emoji
-                print("unwind 1")
+                Emoji.saveToFile(emojis: emojisCategorized)
                 tableView.reloadRows(at: [selectedIndexPath], with: .none)
             } else {
-                print("emojis count 1: \(emojis.count)")
-                emojis.append(emoji)
-                print("emojis count 2: \(emojis.count)")
-                emojiCategorization(source: emojis)
-                print("unwind2")
-                tableView.reloadData()
+                let emojiCat = emoji.category
+                var indexCat = 0
+                switch emojiCat {
+                case emojiCategory.Smileys.rawValue:
+                    indexCat = 0
+                case emojiCategory.People.rawValue:
+                    indexCat = 1
+                case emojiCategory.Animals.rawValue:
+                    indexCat = 2
+                case emojiCategory.Nature.rawValue:
+                    indexCat = 3
+                case emojiCategory.Food.rawValue:
+                    indexCat = 4
+                case emojiCategory.Objects.rawValue:
+                    indexCat = 5
+                case emojiCategory.Symbols.rawValue:
+                    indexCat = 6
+                default:
+                    indexCat = 0
+                }
+                
+                let newIndexPath = IndexPath(row: emojisCategorized[indexCat].count, section: indexCat)
+                emojisCategorized[indexCat].append(emoji)
+                tableView.insertRows(at: [newIndexPath], with: .automatic)
+
             }
+            Emoji.saveToFile(emojis: emojisCategorized)
         }
     }
     
